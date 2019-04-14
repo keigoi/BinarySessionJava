@@ -55,9 +55,9 @@ public class Ordinals {
 		});
 		
 		var c2 = send(send(client, dividend), divisor);
-		follow(c2, (Client<Response<Integer, Close>, EndBlock> c) -> {
+		follow(c2, c -> {
 			close(receive(c, new Buf<>())); // TODO
-		}, (Client<Response<String, Close>, EndBlock> c) -> {
+		}, c -> {
 			close(receive(c, new Buf<>())); // TODO
 		});
 	}
@@ -68,13 +68,13 @@ public class Ordinals {
 			while(true) {
 				var buf = new Buf<Integer>();
 				var s2 = send(receive(s1, buf), "TODO");
-				follow(s2, (Server<Jump<Zero>, Block<Request<Integer, Response<String, RequestChoice<Jump<Zero>, Close>>>, EndBlock>> s3) -> {
+				follow(s2, s3 -> {
 					
 					// Error: Local variable s1 defined in an enclosing scope must be final or effectively final
 					// s1 = zero(s3);
 					// usual technique is to turn s1 into an array but I do not write s1's type
 					
-				}, (Server<Close, Block<Request<Integer, Response<String, RequestChoice<Jump<Zero>, Close>>>, EndBlock>> s3) -> {
+				}, s3 -> {
 					close(s3);
 				});
 			}
